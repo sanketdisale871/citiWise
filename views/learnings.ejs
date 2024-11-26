@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <link href="a.html" />
+    <title>Learnings | CitiWise</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .title-header {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .content-container {
+        max-width: 1147px;
+        /* margin: auto; */
+        background-color: #fff;
+        border-radius: 12px;
+
+        padding: 20px;
+        border: 2px solid #c8ff16;
+      }
+      .content-container:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .learning-topic {
+        margin: 10px 0;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        transition: background-color 0.3s;
+      }
+      .learning-topic:hover {
+        background-color: #e7f1ff;
+        cursor: pointer;
+      }
+      .video-section {
+        margin-top: 20px;
+        background-color: #e9ecef;
+        padding: 15px;
+        border-radius: 8px;
+      }
+      .video-item {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      .video-item a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+      }
+      .video-item a:hover {
+        text-decoration: underline;
+      }
+      .footer-text {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="header">
+        <div class="logo">
+          <!-- <i class="ri-menu-line icon icon-0 menu"></i> -->
+          <a href="/">
+            <h2>Citi<span>Wise</span></h2>
+          </a>
+        </div>
+        <p>Welcome, <span><%=user.name%></span></p>
+      </section>
+
+    <section class="main">
+        <div class="sidebar">
+            <ul class="sidebar--items">
+              <li>
+                <a href="/">
+                  <span class="icon icon-1"
+                    ><i class="ri-layout-grid-line"></i
+                  ></span>
+                  <span class="sidebar--item">Dashboard</span>
+                </a>
+              </li>
+              <li>
+                <a href="/family">
+                  <span class="icon icon-2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4d6ff9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-handshake"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"/><path d="m18 15-2-2"/><path d="m15 18-2-2"/></svg></span>
+                  <span class="sidebar--item">My Family</span>
+                </a>
+              </li>
+              <li>
+                <a href="/halt">
+                  <span class="icon icon-2"
+                    ><i
+                      class="ri-stop-circle-fill"
+                      style="color: rgb(219, 75, 75)"
+                    ></i
+                  ></span>
+                  <span class="sidebar--item">citiGPT</span>
+                </a>
+              </li>
+              <li>
+                <a href="/investments">
+                  <span class="icon icon-4"
+                    ><i class="ri-notification-3-line"></i
+                  ></span>
+                  <span class="sidebar--item">Investments</span>
+                </a>
+              </li>
+              <li>
+                <a href="/ladles/maintainance">
+                  <span class="icon icon-5"
+                    ><i class="ri-database-2-fill"></i
+                  ></span>
+                  <span class="sidebar--item">Liabilities</span>
+                </a>
+              </li>
+              <li>
+                <a href="/goals">
+                  <span class="icon icon-5"
+                    ><i class="ri-line-chart-line"></i
+                  ></span>
+                  <span class="sidebar--item">Goals</span>
+                </a>
+              </li>
+              <li>
+                <a href="/learnings"  id="active--link">
+                  <span class="icon icon-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#656afb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open-text"><path d="M12 7v14"/><path d="M16 12h2"/><path d="M16 8h2"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/><path d="M6 12h2"/><path d="M6 8h2"/></svg>
+                  
+                </span>
+                  <span class="sidebar--item">Learning</span>
+                </a>
+              </li>
+              
+            </ul>
+            <ul class="sidebar--bottom-items">
+              <li>
+                <a href="/api/logout">
+                  <span class="icon icon-8" style="color: black;"
+                    ><i class="ri-logout-box-r-line"></i
+                  ></span>
+                  <span class="sidebar--item">Logout</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+    
+      <div class="main--content">
+        <div class="content-container">
+          <h1 class="title-header" style="font-size: 35px">
+            Finance Learning Section
+          </h1>
+          <p style="font-size: 22px; margin-bottom: 2rem">
+            Explore various finance topics through curated YouTube videos. Click
+            on a topic to find recommended videos to enhance your knowledge!
+          </p>
+
+          <div class="topics-container">
+            <h2 style="margin-bottom: 2rem">Available Topics</h2>
+            <div class="learning-topic" onclick="showVideos('budgetingVideos')">
+              Budgeting
+            </div>
+            <div class="learning-topic" onclick="showVideos('investingVideos')">
+              Investing
+            </div>
+            <div class="learning-topic" onclick="showVideos('creditVideos')">
+              Credit Management
+            </div>
+            <div class="learning-topic" onclick="showVideos('savingVideos')">
+              Saving Strategies
+            </div>
+            <div
+              class="learning-topic"
+              onclick="showVideos('retirementVideos')"
+            >
+              Retirement Planning
+            </div>
+          </div>
+
+          <div
+            class="video-section"
+            id="recommendedVideos"
+            style="display: none"
+          >
+            <h2>Recommended Videos</h2>
+            <div id="videoList"></div>
+          </div>
+
+          <div class="footer-text">&copy; 2024 @CitiWise</div>
+        </div>
+
+        <script>
+          const videoTopics = {
+            budgetingVideos: [
+              {
+                title: "How to Create a Budget",
+                url: "https://www.youtube.com/watch?v=example1",
+              },
+              {
+                title: "Budgeting Basics for Beginners",
+                url: "https://www.youtube.com/watch?v=example2",
+              },
+            ],
+            investingVideos: [
+              {
+                title: "Investing for Beginners",
+                url: "https://www.youtube.com/watch?v=example3",
+              },
+              {
+                title: "Understanding Stocks and Bonds",
+                url: "https://www.youtube.com/watch?v=example4",
+              },
+            ],
+            creditVideos: [
+              {
+                title: "Credit Management 101",
+                url: "https://www.youtube.com/watch?v=example5",
+              },
+              {
+                title: "How to Improve Your Credit Score",
+                url: "https://www.youtube.com/watch?v=example6",
+              },
+            ],
+            savingVideos: [
+              {
+                title: "Saving Strategies for Everyone",
+                url: "https://www.youtube.com/watch?v=example7",
+              },
+              {
+                title: "The Importance of Emergency Funds",
+                url: "https://www.youtube.com/watch?v=example8",
+              },
+            ],
+            retirementVideos: [
+              {
+                title: "Retirement Planning Basics",
+                url: "https://www.youtube.com/watch?v=example9",
+              },
+              {
+                title: "How Much Should You Save for Retirement?",
+                url: "https://www.youtube.com/watch?v=example10",
+              },
+            ],
+          };
+
+          function showVideos(selectedTopic) {
+            const videoSection = document.getElementById("recommendedVideos");
+            const videoListContainer = document.getElementById("videoList");
+
+            videoListContainer.innerHTML = ""; // Clear previous videos
+
+            const selectedVideos = videoTopics[selectedTopic];
+
+            if (selectedVideos) {
+              selectedVideos.forEach((video) => {
+                const videoItem = document.createElement("div");
+                videoItem.classList.add("video-item");
+                videoItem.innerHTML = `<a href="${video.url}" target="_blank">${video.title}</a>`;
+                videoListContainer.appendChild(videoItem);
+              });
+            }
+
+            videoSection.style.display = "block";
+          }
+        </script>
+        <br />
+        <br />
+      </div>
+    </section>
+  </body>
+</html>

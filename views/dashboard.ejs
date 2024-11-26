@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/css/dashboard.css" />
+     <!-- Custom Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+  
+
+    <link href="a.html" />
+    <title>Dashboard | CitiWise</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+    <style>
+      /* Container for the chart */
+      .chart-container {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        /* max-width: 700px; */
+        /* height: 105%; */
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-top: 2rem;
+        /* border: 2px solid #c8ff16; */
+    }
+
+      /* Heading styles */
+      .custom-title {
+        color: #007bff;
+        font-size: 32px;
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+
+      .custom-subtitle {
+        color: #333;
+        font-size: 24px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+      }
+
+      /* Styling the canvas */
+      canvas {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+      }
+    </style>
+
+    <style>
+      .goal-container {
+        width: 210px;
+        margin: 19px;
+      }
+      .goal-text {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #666;
+      }
+      .goal-text .current-value {
+        font-weight: bold;
+        color: #333;
+      }
+      .progress-bar {
+        width: 100%;
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 5px;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background-color: #333;
+        width: 0;
+        border-radius: 5px;
+        transition: width 0.3s ease;
+      }
+
+      .financial-stats-container {
+        display: flex;
+        /* gap: 20px; */
+        margin-top: 2rem;
+        justify-content: space-between;
+      }
+      .stat-card {
+        background-color: #fff;
+        border-radius: 8px;
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+        padding: 20px;
+        padding-bottom: 0;
+        width: 200px;
+        text-align: center;
+        /* border-color: #c8ff16; */
+        border: 2px solid #c8ff16;
+      }
+      .stat-card h3 {
+        margin: 0;
+        color: #555;
+        font-size: 19px;
+      }
+      .stat-value {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      .receivable-value .stat-value {
+        color: #4a90e2;
+      }
+      .payable-value .stat-value {
+        color: #d0021b;
+      }
+      .equity-ratio-value .stat-value {
+        color: #7ed321;
+      }
+      .debt-equity-value .stat-value {
+        color: #f5a623;
+      }
+    </style>
+
+    <style>
+      @font-face {
+        font-family: pop;
+        src: url(./Fonts/Poppins-Medium.ttf);
+      }
+
+      .input-container {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      input {
+        padding: 10px;
+        width: 300px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .styled-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #3498db;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-bottom: 1rem;
+      }
+
+      .styled-button:hover {
+        background-color: #2980b9;
+      }
+
+      .mainn {
+        color: #c43949;
+        width: 97%;
+        /* height: 100vh; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: pop;
+        padding: 3rem;
+        padding-bottom: 5rem !important;
+        flex-direction: column;
+        /* border: 2px solid red; */
+        border-radius: 25px;
+        padding-bottom: 43px;
+        margin-top: 27px;
+        margin-bottom: 27px;
+        /* padding-top: 1rem; */
+        margin-top: 2rem;
+        /* background-color: #ff510086; */
+        /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      }
+
+      #progressWala {
+        display: flex;
+        margin-top: 23px;
+      }
+
+      #progressWala li {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 35px;
+      }
+
+      #progressWala .last {
+        margin-right: 33px;
+      }
+
+      #progressWala li .icon {
+        font-size: 35px;
+        color: #ff4732;
+        margin: 0 60px;
+      }
+
+      #progressWala li .text {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ff4732;
+      }
+
+      /* Progress Div Css  */
+
+      ul li .progress {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: rgba(68, 68, 68, 0.781);
+        margin: 14px 0;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .progress::after {
+        content: " ";
+        position: absolute;
+        width: 125px;
+        height: 5px;
+        background-color: rgba(68, 68, 68, 0.781);
+        right: 30px;
+      }
+
+      .one::after {
+        width: 0;
+        height: 0;
+      }
+
+      ul li .progress .uil {
+        display: none;
+      }
+
+      ul li .progress p {
+        font-size: 13px;
+      }
+
+      /* Active Css  */
+
+      ul li .active {
+        background-color: #ff4732;
+        display: grid;
+        place-items: center;
+      }
+
+      li .active::after {
+        background-color: #ff4732;
+      }
+
+      ul li .active p {
+        display: none;
+      }
+
+      ul li .active .uil {
+        font-size: 20px;
+        display: flex;
+      }
+
+      /* ====================== */
+      #line-container {
+        position: relative;
+        width: 100%;
+        /* Adjust the width as needed */
+        height: 5px;
+        margin-top: 4rem;
+        /* Adjust the height as needed */
+        background-color: #f0f0f0;
+        /* Background color of the line */
+        display: flex;
+        justify-content: space-between;
+        bottom: 1rem;
+        align-items: center;
+      }
+      #text-container {
+        position: relative;
+        width: 100%;
+        /* height: 5px; */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .point {
+        /* position: absolute; */
+        width: 5px;
+        /* Diameter of the circle */
+        height: 5px;
+        /* background-color: transparent; */
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+        display: flex;
+        justify-content: center;
+        color: white;
+      }
+
+      .point:nth-child(odd) {
+        /* transform: scale(1.5); */
+        width: 20px;
+        /* Diameter of the circle */
+        height: 20px;
+        background-color: rgb(223, 222, 222);
+      }
+
+      #add-form {
+        /* width: 100%; */
+        width: 340px;
+        margin-top: 1rem;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        padding: 1rem;
+        border-radius: 1rem;
+      }
+
+      input {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      #add-form {
+        /* width: 100%; */
+        width: 60%;
+        margin-top: 1rem;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        padding: 1rem;
+        border-radius: 1rem;
+        margin: auto;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+      }
+    </style>
+    <style>
+      .sidebar--items a, .sidebar--bottom-items a {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        margin-bottom: 0.4rem;
+        font-size: 1.3rem;
+        font-weight: 67px;
+      
+        color: #ffffff;
+        padding: 12px;
+        border-radius: 23px;
+        width: 16rem;
+    }
+
+  
+  .sidebar--items a:hover, .sidebar--bottom-items a:hover {
+    background-color: #cdffcf !important;
+    color: #0031b9 !important;
+}
+  
+  .sidebar .logo {
+    width: 89%;
+    margin-bottom: 5%;
+    height: 11%;
+    margin-top: 8%;
+    border-radius: 1rem;
+} 
+.expand-card:hover {
+  transform: scale(1.02);
+  box-shadow: 4px 8px 10px rgba(0, 0, 0, 0.2);
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 355px;
+  background-color: #041643;
+  align-items: center;
+  padding: 30px;
+  border-top-right-radius: 15px;
+  box-shadow: 2px 1px 6px rgb(249, 255, 235);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5 rem;
+}
+    </style>
+  </head>
+
+  <body>
+ 
+
+    <section class="main">
+     <div class="sidebar">
+        <!-- Logo Image -->
+    <img src="/img/logo.png" alt="description" class="logo" />
+
+    <!-- Horizantal Rule -->
+    <hr style="width: 100%; margin-top:35%" />
+      
+        <ul class="sidebar--items" style="margin-right: 1rem; margin-top:2rem">
+          <li>
+            <a href="/" id="active--link">
+              <span class="icon icon-1">
+                <i class="ri-layout-grid-line"></i>
+              </span>
+              <span class="sidebar--item">Dashboard</span>
+            </a>
+          </li>
+    
+          <li>
+            <a href="/citigpt">
+              <span class="icon icon-2"><i class="ri-robot-3-fill"></i></span>
+              <span class="sidebar--item">citiGPT</span>
+            </a>
+          </li>
+    
+          <li>
+            <a href="/family">
+              <span class="icon icon-2"><i class="ri-team-fill"></i></span>
+              <span class="sidebar--item">My Family</span>
+            </a>
+          </li>
+    
+          <li>
+            <a href="/investments">
+              <span class="icon icon-4">
+                <i class="ri-database-2-fill"></i>
+              </span>
+              <span class="sidebar--item">My Investments</span>
+            </a>
+          </li>
+    
+          <li>
+            <a href="/expenses">
+              <span class="icon icon-5"><i class="ri-receipt-fill"></i></span>
+              <span class="sidebar--item">My Expenses</span>
+            </a>
+          </li>
+    
+          <li>
+            <a href="/liabilities">
+              <span class="icon icon-5">
+                <i class="ri-pass-pending-fill"></i></span>
+              <span class="sidebar--item">My Liabilities</span>
+            </a>
+          </li>
+    
+          <li>
+            <a href="/goals">
+              <span class="icon icon-5"><i class="ri-focus-2-fill"></i></span>
+              <span class="sidebar--item">My Goals</span>
+            </a>
+          </li>
+    
+          <li>
+            <a href="learnings">
+              <span class="icon icon-5"> <i class="ri-book-open-fill"></i></span>
+              <span class="sidebar--item">Learning</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="sidebar--bottom-items" style="margin-top: 10rem;margin-right:1rem">
+          <li>
+            <a href="/api/logout">
+              <span class="icon icon-8">
+                <i class="ri-logout-circle-line"></i>
+              </span>
+              <span class="sidebar--item" style="margin-right: 5.5rem;">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="main--content">
+
+        <div class="section-name"
+        style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #ffffff; box-shadow: 2px 5px 20px rgba(12, 12, 12, 0.1);margin-top:1rem">
+
+      <div style="font-size: 22px; font-weight: bold; color: #000000; ">
+        My Dashboard
+      </div>
+
+      <div style="display: flex; align-items: center;">
+
+
+        <div style="text-align: right; margin-right: 10px;">
+          <div style="font-size: 16px; font-weight: bold; color: #041643;">
+            <%=user.name%>
+          </div>
+          <% if(user.familyId){ %>
+            <div style="font-size: 12px; color: #072777;">
+              Family ID: <%=user.familyId%>
+            </div>
+            <% } %>
+        </div>
+
+
+        <div
+          style="width: 50px; height: 50px; border-radius: 50%; background-color: #000000; display: flex; align-items: center; justify-content: center;">
+          <i class="ri-account-circle-fill" style="font-size: 40px; color: #ffffff;"></i>
+        </div>
+
+      </div>
+    </div>
+    
+    <h2
+    style="font-size: 22px; font-weight: bold; color: #333; margin-top: 30px; margin-bottom: 20px; padding-left: 10px;">
+    Overview
+  </h2>
+        <!-- <div class="financial-stats-container">
+       
+          <div class="stat-card receivable-value">
+            <h3>Total Balance</h3>
+            <div class="stat-value">INR <%=totalBalance%></div>
+          </div>
+
+          <div class="stat-card payable-value">
+            <h3>Total Investment</h3>
+            <div class="stat-value">INR <%=totalInvested%></div>
+          </div>
+
+          <div class="stat-card equity-ratio-value">
+            <h3>Total Liabilitie</h3>
+            <div class="stat-value">INR 2,630</div>
+          </div>
+
+          <div class="stat-card debt-equity-value" style="width: 268px">
+            <h3>Goal Progress</h3>
+            <div class="goal-container">
+              <div class="goal-text">
+                <span>Income Goal</span>
+                <span class="current-value">INR 23,240 / 39,276</span>
+              </div>
+
+              <div class="progress-bar">
+                <div class="progress-bar-fill"></div>
+              </div>
+            </div>
+          </div>
+
+        </div> -->
+
+        <div style="display: flex; justify-content: space-between; padding-left: 15px; padding-right: 15px; ">
+
+
+          <div style="flex: 1; margin-right: 10px;">
+            <div class="expand-card"
+              style="background-color:#e8efff; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: left;">
+              <div style="display: flex; flex-direction: row; align-items: center;justify-content: space-between; ">
+                <div style="font-size: 30px; font-weight: bold; color: #000000;">
+                  INR <%=totalBalance%>
+                </div>
+                <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                  <i class="ri-money-dollar-circle-fill"></i>
+                </div>
+              </div>
+  
+              <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+                Total Balance
+              </div>
+  
+            </div>
+          </div>
+  
+          <div style="flex: 1; margin-right: 10px;">
+            <div class="expand-card"
+              style="background-color:#e4ffe0; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: left;">
+              <div style="display: flex; flex-direction: row; align-items: center;justify-content: space-between; ">
+                <div style="font-size: 30px; font-weight: bold; color: #000000;">
+                  INR <%=totalInvested%>
+                </div>
+  
+                <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                  <i class="ri-database-2-fill"></i>
+                </div>
+  
+              </div>
+              <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+                Total Investment
+              </div>
+  
+            </div>
+          </div>
+          <div style="flex: 1; margin-right: 10px;">
+            <div class="expand-card"
+              style="background-color:#ffe0e0; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: left;">
+              <div style="display: flex; flex-direction: row; align-items: center;justify-content: space-between; ">
+                <div style="font-size: 30px; font-weight: bold; color: #000000;">
+                  INR <%=totalInvested%>
+                </div>
+  
+                <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                  <i class="ri-pass-pending-fill"></i></span>
+                </div>
+  
+              </div>
+              <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+                 Total Liabilitie
+              </div>
+  
+            </div>
+          </div>
+
+          <div style="flex: 1; margin-right: 10px;">
+            <div class="expand-card"
+              style="background-color:#fffce0; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: left;">
+              <div style="display: flex; flex-direction: row; align-items: center;justify-content: space-between; ">
+                <div style="font-size: 30px; font-weight: bold; color: #000000;">
+                  73 
+                </div>
+  
+                <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                  <i class="ri-pass-pending-fill"></i></span>
+                </div>
+  
+              </div>
+              <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+                Financial Health Score
+              </div>
+  
+            </div>
+          </div>
+  
+          <!-- <div style="flex: 1; margin-right: 10px;">
+            <div class="expand-card"
+              style="background-color:#ffe0e0; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: center;">
+              <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                <i class="ri-add-circle-fill"></i>
+              </div>
+              <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+                Total Liabilitie
+              </div>
+  
+            </div>
+          </div> -->
+  
+          <!-- <div style="flex: 1; margin-right: 10px; height:ma">
+            <div class="expand-card"
+              style="background-color:#fffce0; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: center;">
+              <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                <i class="ri-exchange-funds-line"></i>
+              </div>
+              <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+                Update Liability
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+
+        <!-- Bank Accounts Wala Part  -->
+        <div class="overview">
+          <div class="title">
+            
+            <h2
+            style="font-size: 22px; font-weight: bold; color: #333; margin-top: 30px; margin-bottom: 20px; padding-left: 10px;">
+            My Accounts
+          </h2>
+            <button class="add-account-btn" onclick="openModal()" style="border-radius:2%;">
+              Add New Bank Account
+            </button>
+
+            <!-- Bank Modal -->
+
+            <div id="bankModal" class="modal">
+              <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 style="margin-bottom: 1rem">Add Bank Account</h2>
+                <form action="/api/account" method="post" id="bankForm">
+                  <label for="bank">Bank Name:</label>
+                  
+                  <select id="bank" name="bank" required>
+                    <option value="">Select Bank</option>
+                    <option value="Citi Bank">Citi Bank</option>
+                    <option value="Chase Bank">Chase Bank</option>
+                    <option value="Barclays">Barclays</option>
+                  </select>
+                  
+                  <br />
+
+                  <label for="accountType">Account Type:</label>
+                  <select id="accountType" name="accountType" required>
+                    <option value="Saving">Saving</option>
+                    <option value="Loan">Loan</option>
+                    <option value="Credit">Credit</option>
+                    <option value="Business">Business</option>
+                  </select>
+
+                  <br />
+
+                  <label for="accountNumber">Account Number:</label>
+                  <input
+                    type="text"
+                    id="accountNumber"
+                    name="accountNumber"
+                    required
+                  /><br />
+
+                  <input type="submit" value="Submit" />
+                </form>
+              </div>
+            </div>
+            <!-- End Bank Modal -->
+          </div>
+          <br />
+          <div class="cards">
+            <% if (user) { %>
+              <% if (user.accounts.length !== 0) { %>
+                <% for(let i=0; i<user.accounts.length; i++) {%>
+                  <div class="card card-1">
+                    <div class="card--data">
+                      <div class="card--content">
+                        <h2 class="card--title"><%=user.accounts[i].bankName %></h2>
+                        <br />
+                        <h4 class="card--title acntNo">********<%=user.accounts[i].accountNumber.slice(-2)%></h4>
+                      </div>
+                      <div>
+                        <h2 class="card--title"><%=user.accounts[i].accountType %></h2>
+                        <% if (user.accounts[i].bankName === "Citi Bank") {%>
+                          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="70" height="70" viewBox="0 0 100 100">
+                            <path fill="#565fa0" d="M32.847,64c-1.778,1.843-4.296,3-7.097,3C20.365,67,16,62.747,16,57.5s4.365-9.5,9.75-9.5	c2.801,0,5.319,1.157,7.097,3L37,45.686C34.028,42.791,29.977,41,25.5,41C16.387,41,9,48.387,9,57.5C9,66.613,16.387,74,25.5,74	c4.477,0,8.528-1.791,11.5-4.686L32.847,64z"></path><rect width="7" height="33" x="42" y="41" fill="#565fa0"></rect><rect width="7" height="33" x="80" y="41" fill="#565fa0"></rect><path fill="#565fa0" d="M70,68c-1.657,0-3-1.343-3-3V47h6v-6h-6V31l-7,3.5V41h-6v6h6l0,19c0,4.261,3.339,7.993,7.6,7.993	c4.4,0,5.9-1.493,5.9-1.493L75,67C75,67,73,68,70,68z"></path><path fill="#f05b6c" d="M45.188,33.5c4.774-4.933,11.436-8,18.812-8s14.039,3.067,18.812,8H90.5	c-5.82-8.458-15.516-14-26.5-14s-20.68,5.542-26.5,14H45.188z"></path><path fill="#1f212b" d="M25.5,75C15.851,75,8,67.149,8,57.5S15.851,40,25.5,40c4.576,0,8.908,1.765,12.198,4.97	c0.365,0.356,0.404,0.93,0.09,1.332l-4.152,5.313c-0.179,0.228-0.446,0.368-0.736,0.383c-0.269,0.018-0.569-0.096-0.771-0.304	C30.45,49.957,28.186,49,25.75,49C20.925,49,17,52.813,17,57.5s3.925,8.5,8.75,8.5c2.436,0,4.7-0.957,6.378-2.695	c0.201-0.208,0.496-0.325,0.771-0.304c0.29,0.015,0.558,0.155,0.736,0.383l4.152,5.313c0.314,0.402,0.275,0.976-0.09,1.332	C34.408,73.235,30.076,75,25.5,75z M25.5,42C16.953,42,10,48.953,10,57.5S16.953,73,25.5,73c3.754,0,7.323-1.342,10.145-3.797	l-2.913-3.728C30.785,67.111,28.346,68,25.75,68C19.822,68,15,63.29,15,57.5S19.822,47,25.75,47c2.596,0,5.035,0.889,6.981,2.525	l2.913-3.728C32.823,43.342,29.254,42,25.5,42z"></path><path fill="#1f212b" d="M49,75h-7c-0.553,0-1-0.448-1-1V41c0-0.552,0.447-1,1-1h7c0.553,0,1,0.448,1,1v33	C50,74.552,49.553,75,49,75z M43,73h5V42h-5V73z"></path><path fill="#1f212b" d="M87,75h-7c-0.553,0-1-0.448-1-1V41c0-0.552,0.447-1,1-1h7c0.553,0,1,0.448,1,1v33	C88,74.552,87.553,75,87,75z M81,73h5V42h-5V73z"></path><path fill="#1f212b" d="M67.6,74.993c-4.742,0-8.6-4.034-8.6-8.993V48h-5c-0.553,0-1-0.448-1-1v-6c0-0.552,0.447-1,1-1h5	v-5.5c0-0.379,0.214-0.725,0.553-0.895l7-3.5c0.31-0.155,0.678-0.139,0.973,0.044C67.82,30.332,68,30.653,68,31v9h5	c0.553,0,1,0.448,1,1v6c0,0.552-0.447,1-1,1h-5v17c0,1.103,0.897,2,2,2c2.732,0,4.535-0.885,4.553-0.895	c0.354-0.175,0.776-0.128,1.081,0.121c0.306,0.25,0.435,0.656,0.331,1.037l-1.5,5.5c-0.046,0.168-0.136,0.322-0.26,0.445	C74.022,73.392,72.277,74.993,67.6,74.993z M55,46h5c0.553,0,1,0.448,1,1v19c0,3.791,3.022,6.993,6.6,6.993	c3.048,0,4.537-0.764,5.024-1.082l0.914-3.353C72.62,68.793,71.411,69,70,69c-2.206,0-4-1.794-4-4V47c0-0.552,0.447-1,1-1h5v-4h-5	c-0.553,0-1-0.448-1-1v-8.382l-5,2.5V41c0,0.552-0.447,1-1,1h-5V46z"></path><path fill="#1f212b" d="M90.5,34h-7.688c-0.136,0-0.265-0.055-0.359-0.152C77.557,28.787,71.003,26,64,26	s-13.557,2.787-18.453,7.848C45.452,33.945,45.323,34,45.188,34H37.5c-0.186,0-0.356-0.103-0.442-0.267	c-0.087-0.165-0.075-0.363,0.03-0.517C43.214,24.314,53.274,19,64,19s20.786,5.314,26.912,14.216	c0.105,0.153,0.117,0.352,0.03,0.517C90.856,33.897,90.686,34,90.5,34z M83.023,33h6.508C83.551,24.842,74.077,20,64,20	s-19.551,4.842-25.531,13h6.508c5.07-5.161,11.817-8,19.023-8S77.953,27.839,83.023,33z"></path><path fill="#1f212b" d="M83.989,31c-0.123,0-0.247-0.045-0.344-0.137c-0.101-0.095-0.203-0.187-0.307-0.278l-0.174-0.156	c-0.205-0.186-0.221-0.501-0.036-0.707c0.186-0.204,0.502-0.22,0.706-0.036l0.168,0.15c0.111,0.098,0.222,0.197,0.33,0.299	c0.2,0.189,0.209,0.506,0.02,0.707C84.254,30.947,84.122,31,83.989,31z"></path><path fill="#1f212b" d="M81.5,28.903c-0.105,0-0.211-0.033-0.302-0.101c-0.973-0.735-1.965-1.396-2.948-1.964	c-0.239-0.138-0.321-0.444-0.183-0.683c0.139-0.239,0.446-0.32,0.683-0.183c1.019,0.589,2.045,1.273,3.052,2.033	c0.22,0.167,0.264,0.48,0.098,0.7C81.801,28.834,81.651,28.903,81.5,28.903z"></path><path fill="#1f212b" d="M44.011,31c-0.133,0-0.265-0.052-0.363-0.156c-0.189-0.201-0.181-0.517,0.02-0.707	C49.214,24.89,56.436,22,64,22c3.655,0,7.249,0.68,10.682,2.02c0.258,0.101,0.385,0.391,0.284,0.647	c-0.101,0.257-0.393,0.385-0.647,0.284C71.002,23.657,67.53,23,64,23c-7.308,0-14.285,2.792-19.646,7.863	C44.258,30.955,44.134,31,44.011,31z"></path>
+                            </svg>
+                          <% } else if(user.accounts[i].bankName === "Chase Bank") {%>
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            width="70"
+                            height="70"
+                            viewBox="0 0 48 48"
+                          >
+                            <path
+                              fill="#1279cd"
+                              d="M42,17L30,6H19c-0.552,0-1,0.448-1,1v10H42z"
+                            ></path>
+                            <path
+                              fill="#1279cd"
+                              d="M31,43l11-12V20c0-0.552-0.448-1-1-1H31V43z"
+                            ></path>
+                            <path
+                              fill="#1279cd"
+                              d="M5,32l12,11h11c0.552,0,1-0.448,1-1V32H5z"
+                            ></path>
+                            <path
+                              fill="#1279cd"
+                              d="M16,6L5,18v11c0,0.552,0.448,1,1,1h10V6z"
+                            ></path>
+                          </svg>
+                            <% } else if(user.accounts[i].bankName === "Barclays") {%>
+                              <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              x="0px"
+                              y="0px"
+                              width="70"
+                              height="70"
+                              viewBox="0 0 64 64"
+                            >
+                              <path
+                                fill="#7bbeeb"
+                                d="M30.013,3.004c-1.537,0-1.855,0.268-2.354,0.824c-0.196-0.013-0.401-0.017-0.615-0.017	c-1.183,0-2.702,0.174-3.997,1.04c-1.251,0.826-1.846,2.288-1.179,3.358c0,0,0.447-0.656,1.918-0.656	c0.207,0,0.436,0.022,0.68,0.042c2.033,0.24,3.537,1.31,3.354,4.136c-0.163,2.824-1.222,5.973-5.553,6.01c0,0-0.558,0-1.153-0.055	c-2.016-0.22-2.65-1.486-2.65-1.486s1.743-0.473,1.757-2.685c-0.015-1.504-1.325-2.881-3.215-3.437	c-0.619-0.181-1.299-0.27-2.007-0.27c-2.229,0-4.731,0.933-6.418,3.136c-3.825,5.05-4.136,12.413-3.203,19.259	c0.939,6.861,5.291,13.217,5.418,13.39c0.092,0.122,0.176,0.188,0.27,0.188c0.048,0,0.098-0.022,0.15-0.065	c1.879-1.824,3.672-4.317,4.439-5.984c0.82,0.654,0.392,2.046-0.059,3.531c-0.429,1.519-1.471,3.535-1.848,4.186	c-0.364,0.636-0.852,1.375-0.196,1.761c0.067,0.041,0.152,0.063,0.253,0.063c0.843,0,2.826-1.469,5.038-4.418	c2.476-3.319,3.733-6.265,3.733-6.265c0.181,0.041,0.484,0.347,0.434,1.183c-0.033,0.848-0.905,4.005-2.604,6.943	c-1.717,2.936-3.302,4.773-3.622,5.191c-0.198,0.242-0.03,0.394,0.098,0.492c0.126,0.085,3.162,2.92,7.573,5.315	C29.68,60.499,31.997,61,31.997,61s2.312-0.488,7.538-3.271c4.409-2.399,7.458-5.246,7.571-5.342c0.128-0.087,0.29-0.224,0.098-0.49	c-0.301-0.399-1.892-2.245-3.605-5.182c-1.693-2.918-2.598-6.095-2.611-6.932c-0.035-0.844,0.249-1.124,0.423-1.194	c0,0,1.27,2.964,3.746,6.265c2.223,2.953,4.187,4.418,5.034,4.418c0.107,0,0.192-0.022,0.262-0.063	c0.636-0.386,0.163-1.136-0.211-1.765c-0.347-0.647-1.404-2.65-1.854-4.182c-0.431-1.502-0.878-2.892-0.042-3.531	c0.769,1.667,2.548,4.173,4.433,5.971c0.05,0.052,0.107,0.078,0.163,0.078c0.083,0,0.172-0.065,0.249-0.177	c0.139-0.185,4.498-6.529,5.429-13.401c0.935-6.861,0.626-14.207-3.203-19.259c-1.676-2.208-4.197-3.147-6.44-3.147	c-0.7,0-1.369,0.091-1.981,0.266c-1.905,0.573-3.21,1.963-3.199,3.452c0,2.212,1.752,2.685,1.752,2.685s-0.586,1.234-2.674,1.486	c-0.39,0.048-0.769,0.07-1.131,0.07c-1.571,0-2.894-0.499-4.114-2.221c-1.183-1.658-1.144-5.071-1.212-6.209	c-0.054-1.155-0.301-3.746-1.515-4.803C33.694,3.436,32.219,3.072,30.38,3C30.246,3.004,30.125,3.004,30.013,3.004"
+                              ></path>
+                              <path
+                                fill="#85cbf8"
+                                d="M27.194,3.639c-0.962-0.348-2.053-0.278-3.077,0.196c-1.901,0.883-2.716,1.634-2.639,2.434	c0.103,1.072,1.769,1.485,3.106,1.818c0.264,0.065,0.503,0.125,0.689,0.181c1.497,0.453,2.166,1.58,2.045,3.449	c-0.21,3.639-1.907,5.498-5.041,5.525c-0.05,0-0.566-0.002-1.082-0.05c-0.995-0.108-1.6-0.489-1.936-0.798	c0.584-0.358,1.448-1.181,1.46-2.918c-0.018-1.696-1.455-3.254-3.574-3.876c-0.656-0.193-1.379-0.291-2.148-0.291	c-1.281,0-4.512,0.326-6.823,3.343c-3.355,4.431-4.463,11.032-3.292,19.622C5.54,37.073,7.842,41.618,9.155,43.9	c0.445,0.772,1.276,1.252,2.169,1.252c0.566,0,1.104-0.188,1.558-0.544c0.959-0.755,1.197-2.172,0.554-3.295	c-1.114-1.949-3.064-5.803-3.6-9.719c-1.192-8.745,0.503-14.056,2.485-16.112c0.132-0.135,0.316-0.191,0.496-0.158	c0.093,0.019,0.262,0.08,0.341,0.284c0.155,0.395,0.403,0.881,0.747,1.553l0.532,1.049c0.288,0.578,1.943,3.486,6.256,3.956	c0.529,0.049,1.031,0.06,1.332,0.066c0.104,0.002,0.181,0.003,0.279,0.009c5.811-0.05,9.645-3.968,10.006-10.22	C32.568,8.029,30.656,4.895,27.194,3.639z"
+                              ></path>
+                              <path
+                                fill="#8d6c9f"
+                                d="M32.003,57.81c-0.115,0-0.23-0.02-0.341-0.06c-1.09-0.396-2.976-1.18-5.771-2.669	c-1.013-0.55-2.588-1.478-4.374-2.795c-0.444-0.328-0.539-0.954-0.211-1.398c0.328-0.444,0.954-0.54,1.398-0.211	c1.693,1.25,3.183,2.127,4.134,2.644c2.41,1.284,4.1,2.017,5.165,2.423c0.59-0.225,1.45-0.58,2.584-1.116	c0.5-0.237,1.097-0.023,1.332,0.476c0.236,0.499,0.022,1.095-0.477,1.332c-1.446,0.685-2.484,1.094-3.101,1.316	C32.232,57.79,32.118,57.81,32.003,57.81z M39.045,54.398c-0.338,0-0.667-0.171-0.855-0.48c-0.287-0.472-0.137-1.087,0.335-1.375	c0.93-0.565,1.861-1.194,2.77-1.868c0.442-0.329,1.068-0.237,1.398,0.208c0.329,0.443,0.236,1.07-0.207,1.399	c-0.957,0.71-1.94,1.373-2.922,1.97C39.401,54.352,39.222,54.398,39.045,54.398z"
+                              ></path>
+                              <path
+                                fill="#8d6c9f"
+                                d="M31.997,62c-0.071,0-0.142-0.007-0.211-0.022c-0.101-0.022-2.515-0.563-7.803-3.381	c-1.83-0.994-4.628-2.718-7.602-5.308l-0.118-0.103c-0.118-0.09-0.502-0.385-0.563-0.926c-0.028-0.243,0.003-0.611,0.31-0.985	l0.201-0.253c0.566-0.703,1.894-2.35,3.331-4.809c0.416-0.72,0.778-1.449,1.087-2.146c-0.304,0.451-0.633,0.916-0.985,1.389	c-1.749,2.331-4.199,4.82-5.839,4.82c-0.283,0-0.551-0.072-0.774-0.209c-1.456-0.858-0.557-2.41-0.219-2.995l0.068-0.117	c0.342-0.59,1.137-2.145,1.587-3.438c-0.786,1.042-1.675,2.066-2.556,2.92c-0.355,0.296-0.65,0.347-0.846,0.347	c-0.412,0-0.77-0.196-1.064-0.582c-0.056-0.076-4.628-6.654-5.614-13.861C3.197,23.614,4.34,16.886,7.783,12.34	c1.695-2.213,4.392-3.532,7.215-3.532c0.815,0,1.585,0.104,2.288,0.31c2.335,0.687,3.916,2.45,3.935,4.387	c-0.009,1.344-0.536,2.267-1.146,2.856c0.28,0.147,0.655,0.277,1.147,0.331c0.523,0.049,1.029,0.05,1.044,0.05	c2.907-0.025,4.357-1.635,4.556-5.067c0.125-1.945-0.614-2.865-2.474-3.085l-0.075-0.006c-0.173-0.015-0.337-0.03-0.487-0.03	c-0.854,0-1.137,0.278-1.139,0.281c-0.19,0.279-0.491,0.419-0.823,0.406c-0.338-0.007-0.626-0.215-0.805-0.501	c-0.928-1.488-0.279-3.562,1.477-4.722c1.211-0.81,2.7-1.206,4.548-1.206c0.071,0,0.141,0,0.21,0.001	c0.603-0.557,1.275-0.809,2.76-0.809L30.353,2c1.611,0.061,3.592,0.318,5.219,1.776c1.369,1.192,1.762,3.65,1.848,5.501	c0.009,0.141,0.016,0.336,0.024,0.562c0.048,1.271,0.148,3.915,1.003,5.113c1.059,1.496,2.084,1.802,3.299,1.802	c0.332,0,0.672-0.021,1.009-0.062c0.51-0.061,0.894-0.191,1.178-0.336c-0.609-0.589-1.133-1.508-1.133-2.842	c-0.016-1.927,1.557-3.702,3.91-4.41c0.719-0.206,1.479-0.309,2.27-0.309c2.848,0,5.553,1.324,7.236,3.542	c3.443,4.543,4.586,11.271,3.397,19.999c-0.978,7.211-5.576,13.807-5.621,13.867c-0.434,0.634-1.396,0.752-1.933,0.193	c-0.865-0.825-1.751-1.842-2.539-2.89c0.436,1.223,1.17,2.658,1.604,3.466c0.368,0.617,1.312,2.204-0.15,3.092	c-0.246,0.143-0.503,0.208-0.782,0.208c-1.627,0-4.08-2.488-5.833-4.817c-0.352-0.468-0.679-0.929-0.981-1.376	c0.308,0.689,0.669,1.412,1.088,2.133c1.42,2.435,2.741,4.083,3.305,4.786c0.106,0.133,0.186,0.232,0.234,0.296	c0.303,0.419,0.313,0.793,0.271,1.037c-0.058,0.331-0.24,0.612-0.543,0.837c-1.082,0.975-3.902,3.362-7.719,5.438	c-5.297,2.822-7.709,3.35-7.81,3.371C32.136,61.993,32.066,62,31.997,62z M17.974,52.021c2.731,2.338,5.279,3.904,6.958,4.815	c4.125,2.198,6.397,2.939,7.067,3.131c0.665-0.188,2.935-0.919,7.066-3.12c3.294-1.792,5.857-3.881,6.954-4.833	c-0.667-0.837-1.931-2.473-3.285-4.794c-1.674-2.888-2.729-6.267-2.747-7.419c-0.063-1.518,0.712-2.001,1.049-2.137	c0.506-0.205,1.079,0.033,1.294,0.533c0.013,0.028,1.26,2.903,3.626,6.059c1.373,1.823,2.54,2.927,3.32,3.505	c-0.546-1.026-1.433-2.801-1.848-4.215l-0.058-0.202c-0.456-1.583-0.974-3.379,0.368-4.405c0.24-0.185,0.554-0.249,0.848-0.176	c0.295,0.073,0.541,0.276,0.668,0.552c0.595,1.29,1.965,3.328,3.573,5.021c1.145-1.811,4.07-6.869,4.802-12.268	c1.115-8.185,0.103-14.416-3.009-18.521c-1.308-1.722-3.417-2.751-5.643-2.751c-0.604,0-1.179,0.077-1.706,0.228	c-1.459,0.438-2.481,1.461-2.474,2.483c0,1.342,0.858,1.679,1.03,1.732c0.276,0.086,0.512,0.292,0.628,0.557	c0.116,0.266,0.121,0.571-0.003,0.833c-0.084,0.177-0.896,1.742-3.459,2.05c-0.415,0.051-0.836,0.077-1.25,0.077	c-2.115,0-3.635-0.815-4.93-2.644c-1.199-1.682-1.311-4.618-1.37-6.195c-0.009-0.208-0.015-0.389-0.023-0.531	c-0.093-1.989-0.542-3.558-1.174-4.109c-0.922-0.825-2.087-1.204-3.906-1.276c-0.078,0.005-0.208,0.005-0.329,0.005	c-1.169,0-1.271,0.114-1.61,0.492c-0.204,0.229-0.504,0.348-0.812,0.33c-0.174-0.012-0.356-0.014-0.548-0.014	c-1.438,0-2.564,0.285-3.441,0.871c-0.409,0.271-0.713,0.624-0.876,0.979c0.455-0.101,1.015-0.132,1.716-0.071l0.105,0.009	c2.961,0.349,4.465,2.193,4.271,5.197c-0.329,5.696-3.74,6.921-6.543,6.945c0.021,0.011-0.613,0-1.254-0.06	c-2.502-0.272-3.362-1.854-3.452-2.033c-0.134-0.268-0.141-0.583-0.019-0.856c0.123-0.274,0.361-0.479,0.651-0.557	c0.153-0.049,1.011-0.387,1.02-1.728c-0.01-1.018-1.037-2.041-2.498-2.471c-0.519-0.152-1.1-0.229-1.725-0.229	c-2.238,0-4.288,1-5.624,2.744c-3.108,4.104-4.121,10.335-3.005,18.516c0.735,5.376,3.686,10.491,4.804,12.273	c1.604-1.705,2.989-3.758,3.573-5.026c0.129-0.279,0.378-0.483,0.677-0.555c0.302-0.069,0.615,0,0.854,0.191	c1.347,1.073,0.781,2.935,0.282,4.578c-0.438,1.552-1.412,3.462-1.844,4.24c0.778-0.576,1.953-1.682,3.326-3.513	c2.366-3.172,3.601-6.029,3.612-6.057c0.189-0.443,0.665-0.685,1.138-0.583c0.613,0.137,1.3,0.8,1.215,2.218	c-0.037,0.946-0.903,4.213-2.735,7.384C19.909,49.546,18.647,51.178,17.974,52.021z M17.586,52.505l-0.008,0.01	C17.581,52.512,17.584,52.508,17.586,52.505z M17.479,51.597c0,0,0.003,0.003,0.01,0.008c-0.003-0.002-0.005-0.004-0.008-0.007	C17.479,51.598,17.479,51.597,17.479,51.597z M52.371,45.031c-0.002,0.002-0.004,0.004-0.005,0.007	C52.367,45.037,52.368,45.035,52.371,45.031z M53.439,44.95c0.01,0.01,0.02,0.019,0.03,0.029	C53.46,44.969,53.45,44.959,53.439,44.95z M42.022,39.33L42.022,39.33L42.022,39.33z"
+                              ></path>
+                            </svg>
+                              <% } %>
+                      </div>
+                    </div>
+                    <h1 class="bnkBal">INR <%=user.accounts[i].currentBalance %></h1>
+                  </div>
+                <% } %>
+              <% } else { %>
+                <p>No Account added yet!</p>
+              <% } %>
+            <% } %>
+
+           
+          </div>
+        </div>
+        <!-- Bank Accounts Wala Part  -->
+
+        <!-- Chart Wala Part  -->
+        <div class="chart-container">
+          <h2
+          style="font-size: 22px; font-weight: bold; color: #333; margin-top: 30px; margin-bottom: 20px; padding-left: 10px;">
+          Income & Expenses Monthly Chart
+        </h2>
+
+          <!-- Canvas for chart -->
+          <canvas id="incomeExpensesChart" width="400" height="125"></canvas>
+        </div>
+
+        <!-- Chart Wala Part  END -->
+        <br />
+        <br />
+      </div>
+    </section>
+
+    <!-- <script>
+        let menu = document.querySelector(".menu");
+        let sidebar = document.querySelector(".sidebar");
+        let mainContent = document.querySelector(".main--content");
+
+        menu.onclick = function () {
+            sidebar.classList.toggle("active");
+            mainContent.classList.toggle("active");
+        };
+    </script> -->
+
+    <script type="module">
+      const randomColors = [
+        "#3498db",
+        "#e74c3c",
+        "#2ecc71",
+        "#f39c12",
+        "#9b59b6",
+        "#1abc9c",
+        "#e67e22",
+        "#3498db",
+        "#16a085",
+        "#c0392b",
+        "#2980b9",
+        "#f1c40f",
+        "#8e44ad",
+        "#27ae60",
+        "#d35400",
+        "#34495e",
+        "#e74c3c",
+        "#2c3e50",
+        "#f39c12",
+        "#7f8c8d",
+      ];
+      function resetColors() {
+        const points = document.querySelectorAll(".point");
+        points.forEach((point, i) => {
+          if (i % 2 == 0) {
+            point.style.backgroundColor = "rgb(223, 222, 222)";
+          } else {
+            point.style.backgroundColor = "#f0f0f0";
+            point.style.width = "5px";
+            point.style.height = "5px";
+          }
+        });
+      }
+
+      function resetText() {
+        const points = document.querySelectorAll(".point");
+        points.forEach((point, i) => {
+          point.innerHTML = "";
+        });
+      }
+
+      function changeColor(pointNumber, color) {
+        const point = document.getElementById(`pointINR {pointNumber}`);
+        if (point) {
+          point.style.width = "20px";
+          point.style.height = "20px";
+          point.style.backgroundColor = color;
+        }
+      }
+
+      function changeText(pointNumber, ladleno) {
+        const point = document.getElementById(`pointINR {pointNumber}`);
+        if (point) {
+          point.style.width = "20px";
+          point.style.height = "20px";
+          point.innerHTML = ladleno;
+        }
+      }
+
+      // Function to fetch data and update colors and text
+      async function fetchDataAndUpdate() {
+        try {
+          const response = await fetch("/ladles/latest/location/all");
+          const result = await response.json();
+          console.log(result.data);
+          if (result.success) {
+            resetColors();
+            resetText();
+            // console.log(result.data);
+
+            result.data.forEach((l, i) => {
+              changeColor(l.Location, randomColors[l.LadleNo]);
+              changeText(l.Location, l.LadleNo);
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      // Run the code every second
+      setInterval(fetchDataAndUpdate, 100);
+      // let i = 1
+      // setInterval(() => {
+      //     resetColors();
+      //     if (i == 10) i = 1;
+      //     changeColor(i, 'red');
+      //     i++;
+      // }, 1000);
+    </script>
+
+    <script>
+      function openModal() {
+        document.getElementById("bankModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("bankModal").style.display = "none";
+      }
+
+    </script>
+
+    <script>
+      // Data for Income and Expenses
+      let labels = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      let incomeData = [
+        15000, 12000, 18000, 14000, 20000, 22000, 17000, 24000, 23000, 
+      ];
+      let expensesData = [
+        12000, 14000, 11000, 16000, 15000, 17000, 13000, 18000, 19000,
+      ];
+
+      // Creating the line chart for Income & Expenses
+      let ctx = document.getElementById("incomeExpensesChart").getContext("2d");
+      let incomeExpensesChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Income",
+              data: incomeData,
+              borderColor: "#28a745", // Green for Income
+              borderWidth: 1.5,
+              fill: false,
+              tension: 0.4, // Smooth curve
+              pointRadius: 1.5, // Smaller dots
+              pointHoverRadius: 6, // Larger on hover
+              pointBackgroundColor: "#28a745",
+              pointBorderColor: "rgba(40,167,69,0.8)",
+            },
+            {
+              label: "Expenses",
+              data: expensesData,
+              borderColor: "#dc3545", // Red for Expenses
+              borderWidth: 1.5,
+              fill: false,
+              tension: 0.4, // Smooth curve
+              pointRadius: 1.5, // Smaller dots
+              pointHoverRadius: 6, // Larger on hover
+              pointBackgroundColor: "#dc3545",
+              pointBorderColor: "rgba(220,53,69,0.8)",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+          },
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Months",
+                font: {
+                  size: 16,
+                  weight: "bold",
+                  family: "Arial",
+                },
+                color: "#333",
+              },
+              grid: {
+                display: false,
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Amount ",
+                font: {
+                  size: 16,
+                  weight: "bold",
+                  family: "Arial",
+                },
+                color: "#333",
+              },
+              beginAtZero: true,
+              grid: {
+                color: "#e0e0e0",
+              },
+              ticks: {
+                stepSize: 5000,
+              },
+            },
+          },
+        },
+      });
+    </script>
+
+    <script>
+      // JavaScript to dynamically set progress
+      const progressBarFill = document.querySelector(".progress-bar-fill");
+      const currentValue = 23240;
+      const goalValue = 39276;
+
+      // Calculate progress as percentage
+      const progressPercentage = (currentValue / goalValue) * 100;
+
+      // Set the width of the progress bar
+      progressBarFill.style.width = progressPercentage + "%";
+    </script>
+  </body>
+</html>

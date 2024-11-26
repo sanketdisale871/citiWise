@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Custom Styles -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+
+
+  <title>Expenses | citiwise</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+
+
+  <!-- Sidebar CSS -->
+  <style>
+    .sidebar {
+      font-family: "Poppins", sans-serif;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #041643;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+      box-shadow: 2px 1px 6px rgb(249, 255, 235);
+    }
+
+    .sidebar .logo {
+      width: 90%;
+      margin-bottom: 5%;
+    }
+
+    .sidebar.active {
+      width: 100px;
+      overflow: hidden;
+    }
+
+    .sidebar li {
+      list-style: none;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+    }
+
+    .sidebar ul {
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .sidebar span {
+      margin-right: 15px;
+    }
+
+    .sidebar--items a,
+    .sidebar--bottom-items a {
+      display: flex;
+      flex-flow: row;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+      color: #ffffff;
+      padding: 7px;
+      border-radius: 13px;
+    }
+
+    .sidebar--items a:hover,
+    .sidebar--bottom-items a:hover {
+      background-color: #cdffcf;
+      color: #0031b9;
+    }
+
+    #active--link {
+      background-color: #39c440;
+      color: #fff;
+    }
+
+    .sidebar--items {
+      flex-grow: 0.85;
+      /* This makes the navigation items take up the remaining space */
+    }
+  </style>
+
+
+
+  <style>
+    .section-name {
+      font-family: "Poppins", sans-serif;
+    }
+
+    .overview {
+      font-family: "Poppins", sans-serif;
+    }
+
+    div {
+      font-family: "Poppins", sans-serif;
+    }
+  </style>
+
+  <style>
+    .expand-card:hover {
+      transform: scale(1.02);
+
+      box-shadow: 4px 8px 10px rgba(0, 0, 0, 0.2);
+
+    }
+  </style>
+
+
+<style>
+  .modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 9% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 15px;
+  width: 453px;
+  height: min-content;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form input,
+form select {
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+  <!-- Navigation drawer -->
+  <div class="sidebar">
+    <!-- Logo Image -->
+    <img src="/img/logo.png" alt="description" class="logo" />
+
+    <!-- Horizantal Rule -->
+    <hr style="width: 100%; margin-bottom: 10%" />
+
+    <!-- Navigation Items -->
+    <ul class="sidebar--items">
+      <li>
+        <a href="/">
+          <span class="icon icon-1">
+            <i class="ri-layout-grid-line"></i>
+          </span>
+          <span class="sidebar--item">Dashboard</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/citigpt">
+          <span class="icon icon-2"><i class="ri-robot-3-fill"></i></span>
+          <span class="sidebar--item">citiGPT</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/family">
+          <span class="icon icon-2"><i class="ri-team-fill"></i></span>
+          <span class="sidebar--item">My Family</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/investments">
+          <span class="icon icon-4">
+            <i class="ri-database-2-fill"></i>
+          </span>
+          <span class="sidebar--item">My Investments</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/expenses" id="active--link">
+          <span class="icon icon-5"><i class="ri-receipt-fill"></i></span>
+          <span class="sidebar--item">My Expenses</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/liabilities" >
+          <span class="icon icon-5">
+            <i class="ri-pass-pending-fill"></i></span>
+          <span class="sidebar--item">My Liabilities</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="/goals">
+          <span class="icon icon-5"><i class="ri-focus-2-fill"></i></span>
+          <span class="sidebar--item">My Goals</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="learnings">
+          <span class="icon icon-5"> <i class="ri-book-open-fill"></i></span>
+          <span class="sidebar--item">Learning</span>
+        </a>
+      </li>
+    </ul>
+
+    <ul class="sidebar--bottom-items">
+      <li>
+        <a href="/api/logout">
+          <span class="icon icon-8">
+            <i class="ri-logout-circle-line"></i>
+          </span>
+          <span class="sidebar--item">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Body -->
+  <div style="margin-left: 300px; padding-left: 20px">
+
+    <div class="section-name"
+      style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #ffffff; box-shadow: 2px 5px 20px rgba(12, 12, 12, 0.1);">
+
+      <div style="font-size: 22px; font-weight: bold; color: #000000; ">
+        My Expenses Dashboard
+      </div>
+
+      <div style="display: flex; align-items: center;">
+
+
+        <div style="text-align: right; margin-right: 10px;">
+          <div style="font-size: 16px; font-weight: bold; color: #041643;">
+            <%=user.name%>
+          </div>
+          <!-- <div style="font-size: 12px; color: #072777;">
+            Family ID: 12345
+          </div> -->
+          <% if(user.familyId){ %>
+            <div style="font-size: 12px; color: #072777;">
+              Family ID: <%=user.familyId._id%>
+            </div>
+            <% } %>
+
+        </div>
+
+
+        <div
+          style="width: 50px; height: 50px; border-radius: 50%; background-color: #000000; display: flex; align-items: center; justify-content: center;">
+          <i class="ri-account-circle-fill" style="font-size: 40px; color: #ffffff;"></i>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="overview">
+      <!-- Overview Heading -->
+      <h2
+        style="font-size: 22px; font-weight: bold; color: #333; margin-top: 30px; margin-bottom: 20px; padding-left: 10px;">
+        Overview
+      </h2>
+
+      <!-- Row with 3 Columns -->
+      <div style="display: flex; justify-content: space-between; padding-left: 15px; padding-right: 15px; ">
+
+
+        <div style="flex: 1; margin-right: 10px;">
+          <div class="expand-card"
+            style="background-color:#e8efff; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: left;">
+            <div style="display: flex; flex-direction: row; align-items: center;justify-content: space-between; ">
+              <div style="font-size: 30px; font-weight: bold; color: #000000;">
+                <%=user.currency%> <%=totalPersonalExpense%>
+              </div>
+              <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                <i class="ri-cash-fill"></i>
+              </div>
+            </div>
+
+            <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+              Personal Expenses <br>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="flex: 1; margin-right: 10px;">
+          <div class="expand-card"
+            style="background-color:#e4ffe0; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: left;">
+            <div style="display: flex; flex-direction: row; align-items: center;justify-content: space-between; ">
+              <div style="font-size: 30px; font-weight: bold; color: #000000;">
+                <%=user.currency%> <%=totalFamilyExpense%>
+              </div>
+
+              <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+                <i class="ri-team-fill"></i>
+              </div>
+
+            </div>
+            <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+              Family Expenses <br>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="flex: 1; margin-right: 10px;">
+          <div id="investMoreBtn" class="expand-card"
+            style=" background-color:#ffe0e0; padding: 15px; border-radius: 10px; box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.1); text-align: center;">
+            <div style="font-size: 50px; color: #072777; margin-bottom: 0px;">
+              <i class="ri-add-circle-fill"></i>
+            </div>
+            <div style="font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px;">
+              Add Expense
+            </div>
+
+          </div>
+        </div>
+
+        
+        
+      </div>
+    </div>
+
+    <!-- Modal for Invest More -->
+    <div id="investMoreModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeInvestMore">&times;</span>
+        <h2>Add Expense</h2>
+        <form action="/api/expense", method="post">
+          <div class="form-group">
+            <label for="expenseAmount">Expense Amount:</label>
+            <input type="number" name="expenseAmount" id="expenseAmount" placeholder="Enter amount" />
+          </div>
+          <div class="form-group">
+            <label for="category">Expense Category:</label>
+            <input type="text" name="category" id="category" placeholder="Food, Travel, etc" />
+          </div>
+          <div class="form-group">
+            <label for="vendor">Expense Vendor:</label>
+            <input type="text" name="vendor" id="vendor" />
+          </div>
+          <div class="form-group">
+            <label for="expenseType">Expense Type:</label>
+            <input type="text" name="expenseType" id="expenseType" placeholder="Business, Tech,Marketing etc" />
+          </div>
+          <div class="form-group">
+            <label for="expenseDate">Expense Date:</label>
+            <input name="expenseDate" type="date" id="expenseDate"  />
+          </div>
+          <div class="form-group">
+            <label for="note">Note:</label>
+            <input name="note" type="text" id="note"  />
+          </div>
+          <button type="submit" style="
+              background-color: #007bff;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+            ">
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    
+
+    <h2
+        style="font-size: 22px; font-weight: bold; color: #333; margin-top: 30px; margin-bottom: 20px; padding-left: 10px;">
+        Visualize your expenses
+      </h2>
+
+    <div style="
+      margin:30px;
+      display: flex;
+      width: auto;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      justify-content: space-around;
+      height: 400px;
+    ">
+      <!-- Column 1: Pie Chart -->
+      <div style="
+              flex: 1;
+              padding: 10px; /* Reduce padding */
+              border-right: 1px solid #e0e0e0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+        <canvas id="liabilitiesPieChart" style="width: 80%; height: 80%;"></canvas> <!-- Adjusted canvas size -->
+      </div>
+
+      <!-- Column 2: Line Chart -->
+      <div style="
+              flex: 1;
+              padding: 10px; /* Reduce padding */
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+        <canvas id="liabilitiesGrowthChart" style="width: 80%; height: 80%;"></canvas> <!-- Adjusted canvas size -->
+      </div>
+    </div>
+
+    <h2
+        style="font-size: 22px; font-weight: bold; color: #333; margin-top: 30px; margin-bottom: 20px; padding-left: 10px;">
+        Your Expenses
+      </h2>
+    <div style="
+      margin: 30px;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    ">
+      <table style="
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+      ">
+        <!-- Table Header -->
+        <thead>
+          <tr style="
+            background-color: #f5f7fa;
+            text-align: left;
+            border-bottom: 2px solid #e0e0e0;
+            color: #072777;
+          ">
+            <th style="padding: 15px 10px;">Expense</th>
+            <th style="padding: 15px 10px;">Amount</th>
+            <th style="padding: 15px 10px;">Vendor</th>
+            <th style="padding: 15px 10px;">Expense Date</th>
+            <th style="padding: 15px 10px;">Category</th>
+            <th style="padding: 15px 10px;">Note</th>
+          </tr>
+        </thead>
+
+        <!-- Table Body -->
+        <tbody>
+          <% for(let i=0; i<user.expenses.length; i++) { %>
+          <!-- Example Row 1 -->
+          <tr style="
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s;
+          " onmouseover="this.style.backgroundColor='#f0f4f8';" onmouseout="this.style.backgroundColor='transparent';">
+            <td style="padding: 15px 10px;"><%=user.expenses[i].expenseType%></td>
+            <td style="padding: 15px 10px;"><%=user.expenses[i].expenseAmount%></td>
+            <td style="padding: 15px 10px;"><%=user.expenses[i].vendor%></td>
+            <td style="padding: 15px 10px;"><%=user.expenses[i].expenseDate.toDateString()%></td>
+            <td style="padding: 15px 10px;"><%=user.expenses[i].category%></td>
+            <td style="padding: 15px 10px;"><%=user.expenses[i].note%></td>
+          </tr>
+
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pie Chart and Graph ki script -->
+    <script>
+      // Pie Chart
+      const ctxPie = document
+        .getElementById("liabilitiesPieChart")
+        .getContext("2d");
+
+
+      const liabilitiesPieChart = new Chart(ctxPie, {
+        type: "doughnut",
+        data: {
+          labels: <%- JSON.stringify(expenseLabelArr) %>,
+          datasets: [
+            {
+              label: "Liabilities Distribution",
+              data:  <%- JSON.stringify(expenseLabelAmountArr) %>,
+              backgroundColor: ["#4caf50", "#2196F3", "#ff9800", "#f44336", "#abb2b9"],
+              borderColor: "#fff",
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "top",
+            },
+            tooltip: {
+              enabled: true,
+            },
+          },
+        },
+      });
+
+      // Line Chart
+      const ctxLine = document
+        .getElementById("liabilitiesGrowthChart")
+        .getContext("2d");
+      const liabilitiesGrowthChart = new Chart(ctxLine, {
+        type: "line",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"],
+          datasets: [
+            {
+              label: "Monthly Expenditure",
+              data: <%- JSON.stringify(monthlyExpenditure) %>,
+              borderColor: "#4caf50",
+              backgroundColor: "rgba(76, 175, 80, 0.2)",
+              fill: true,
+              tension: 0.1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: "top",
+            },
+            tooltip: {
+              enabled: true,
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+            },
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    </script>
+
+    <!-- Modal Logic -->
+    <script>
+      const investMoreModal = document.getElementById("investMoreModal");
+      const investMoreBtn = document.getElementById("investMoreBtn");
+      const closeInvestMore = document.getElementById("closeInvestMore");
+
+      investMoreBtn.onclick = function () {
+        investMoreModal.style.display = "flex";
+      };
+
+      closeInvestMore.onclick = function () {
+        investMoreModal.style.display = "none";
+      };
+      
+    </script>
+</body>
+
+</html>
